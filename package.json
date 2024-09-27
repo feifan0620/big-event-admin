@@ -26,9 +26,10 @@
     "husky": "^8.0.0",
     "lint-staged": "^15.2.10",
     "prettier": "^3.2.5",
+    "sass": "^1.79.3",
     "vite": "^5.3.1"
   },
-    "lint-staged": {
+  "lint-staged": {
     "*.{js,ts,vue}": [
       "eslint --fix"
     ]
