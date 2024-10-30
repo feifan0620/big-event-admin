@@ -1,7 +1,6 @@
 <script setup></script>
 
 <template>
-  <div>大事件管理系统</div>
   <router-view></router-view>
 </template>
 
