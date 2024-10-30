@@ -1,4 +1,7 @@
-<script setup></script>
+<script setup>
+import { useUserStore } from '@/stores/user'
+const userStore = useUserStore()
+</script>
 
 <template>
   <div>大事件管理系统</div>
@@ -9,6 +12,13 @@
     <el-button type="info">Info</el-button>
     <el-button type="warning">Warning</el-button>
     <el-button type="danger">Danger</el-button>
+    <p>{{ userStore.token }}</p>
+    <el-button
+      type="primary"
+      @click="userStore.setToken('fbciqbciuqbeivcbiqebvieu')"
+      >登录</el-button
+    >
+    <el-button type="danger" @click="userStore.removeToken()">退出</el-button>
   </div>
 </template>
 
