@@ -1,5 +1,7 @@
 <script setup>
+import { userRegisterService } from '@/api/user'
 import { User, Lock } from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
 const isRegister = ref(true)
 const ruleForm = ref({
@@ -33,6 +35,12 @@ const rules = ref({
     }
   ]
 })
+const form = ref()
+const handleRegister = async () => {
+  await form.value.validate()
+  await userRegisterService(ruleForm.value)
+  ElMessage.success('注册成功')
+}
 </script>
 
 <template>
@@ -74,7 +82,12 @@ const rules = ref({
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button class="button" type="primary" auto-insert-space>
+          <el-button
+            @click="handleRegister"
+            class="button"
+            type="primary"
+            auto-insert-space
+          >
             注册
           </el-button>
         </el-form-item>

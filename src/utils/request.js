@@ -33,7 +33,7 @@ instance.interceptors.response.use(
       return res
     }
     // 处理业务失败
-    ElMessage.err(res.data.message || '服务异常')
+    ElMessage.error(res.data.message || '服务异常')
     return Promise.reject(res.data)
   },
   (err) => {
