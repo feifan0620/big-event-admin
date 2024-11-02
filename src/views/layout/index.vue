@@ -10,6 +10,12 @@ import {
   CaretBottom
 } from '@element-plus/icons-vue'
 import avatar from '@/assets/default.png'
+import { useUserStore } from '@/stores'
+import { onMounted } from 'vue'
+const userStore = useUserStore()
+onMounted(() => {
+  userStore.getUserInfo()
+})
 </script>
 
 <template>
@@ -53,10 +59,20 @@ import avatar from '@/assets/default.png'
     </el-aside>
     <el-container>
       <el-header>
-        <div>黑马程序员：<strong>小帅鹏</strong></div>
+        <div>
+          Hi,
+          <span>{{
+            userStore.userInfo.nickname || userStore.userInfo.username
+          }}</span>
+          {{
+            new Date().toLocaleTimeString().substring(0, 2) < 12
+              ? '上午好！'
+              : '下午好！'
+          }}
+        </div>
         <el-dropdown placement="bottom-end">
           <span class="el-dropdown__box">
-            <el-avatar :src="avatar" />
+            <el-avatar :src="userStore.userInfo.user_pic || avatar" />
             <el-icon><CaretBottom /></el-icon>
           </span>
           <template #dropdown>
