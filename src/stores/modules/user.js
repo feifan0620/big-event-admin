@@ -22,12 +22,17 @@ export const useUserStore = defineStore(
       userInfo.value = res.data.data
     }
 
+    const setUserInfo = (newUserInfo) => {
+      userInfo.value = newUserInfo
+    }
+
     return {
       token,
       userInfo,
       setToken,
       removeToken,
-      getUserInfo
+      getUserInfo,
+      setUserInfo
     }
   },
   {
