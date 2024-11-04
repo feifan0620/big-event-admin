@@ -37,7 +37,7 @@ instance.interceptors.response.use(
     return Promise.reject(res.data)
   },
   (err) => {
-    ElMessage.err(err.response.data.message || '服务异常')
+    ElMessage.error(err.response.data.message || '服务异常')
     // 处理401错误(无权限或登录超时则前往登录界面)
     if (err.response.status === 401) {
       router.push('/login')
