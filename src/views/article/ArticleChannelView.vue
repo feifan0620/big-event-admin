@@ -3,10 +3,14 @@ import { articleGetCateListService } from '@/api/article'
 import { ref, onMounted } from 'vue'
 import { Delete, Edit } from '@element-plus/icons-vue'
 const cateList = ref([])
+
+const loading = ref(false)
+
 const getCateList = async () => {
+  loading.value = true
   const res = await articleGetCateListService()
   cateList.value = res.data.data
-  console.log(res.data)
+  loading.value = false
 }
 onMounted(() => {
   getCateList()
@@ -24,7 +28,7 @@ const handleDelete = (row, index) => {
     <template #extra>
       <el-button type="primary"> 添加分类 </el-button>
     </template>
-    <el-table :data="cateList" stripe style="width: 100%">
+    <el-table v-loading="loading" :data="cateList" stripe style="width: 100%">
       <el-table-column type="index" label="序号" width="100" />
       <el-table-column prop="cate_name" label="名称" />
       <el-table-column prop="cate_alias" label="别名" />
