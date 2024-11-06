@@ -83,7 +83,7 @@ const dialog = ref()
       <el-table-column label="操作" width="100">
         <template #default="{ row, $index }">
           <el-button
-            type="success"
+            type="primary"
             @click="handleEdit(row, $index)"
             :icon="Edit"
             plain

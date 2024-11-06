@@ -43,7 +43,18 @@ export const articleUpdateCateService = ({ id, cate_name, cate_alias }) => {
  * @returns Promise
  */
 export const articleDelCateService = (id) => {
-  request.delete('/my/cate/del', {
+  return request.delete('/my/cate/del', {
     params: { id }
+  })
+}
+
+/**
+ * @description 获取文章列表
+ * @param {*} obj 文章列表查询参数
+ * @returns Promise
+ */
+export const articleGetArtListService = (obj) => {
+  return request.get('/my/article/list', {
+    params: { ...obj }
   })
 }
