@@ -76,3 +76,25 @@ export const articlePublicService = (params) => {
 export const articleUpdateService = (params) => {
   return request.put('/my/article/info', params)
 }
+
+/**
+ * @description 获取文章详细
+ * @param {*} id 文章 ID
+ * @returns Promise
+ */
+export const articleDetailService = (id) => {
+  return request.get('/my/article/info', {
+    params: { id }
+  })
+}
+
+/**
+ * @description 删除文章
+ * @param {*} id 文章 ID
+ * @returns Promise
+ */
+export const articleDeleteService = (id) => {
+  return request.delete('/my/article/info', {
+    params: { id }
+  })
+}

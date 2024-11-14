@@ -2,9 +2,10 @@
 import { ref } from 'vue'
 import { Delete, Edit } from '@element-plus/icons-vue'
 import CateSelect from './components/CateSelect.vue'
-import { articleGetArtListService } from '@/api/article'
+import { articleDeleteService, articleGetArtListService } from '@/api/article'
 import { formatTime } from '@/utils/format'
 import ArticleEdit from './components/ArticleEdit.vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
 const loading = ref(false) // 加载状态
 
 const total = ref(0) // 文章总数
@@ -73,6 +74,17 @@ const addArticle = () => {
 
 const handleEdit = (row) => {
   articleEditRef.value.open(row)
+}
+
+const handleDelete = async (row) => {
+  await ElMessageBox.confirm('确定要删除该文章吗', '提示', {
+    type: 'warning',
+    confirmButtonText: '确定',
+    cancelButtonText: '取消'
+  })
+  await articleDeleteService(row.id)
+  ElMessage.success('删除成功')
+  getArticleList()
 }
 
 const onSuccess = (type) => {
