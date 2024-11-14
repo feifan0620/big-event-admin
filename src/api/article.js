@@ -64,7 +64,7 @@ export const articleGetArtListService = (params) => {
  * @param {*} params 添加文章参数
  * @returns Promise
  */
-export const articleAddArticleService = (params) => {
+export const articlePublicService = (params) => {
   return request.post('/my/article/add', params)
 }
 
@@ -73,8 +73,6 @@ export const articleAddArticleService = (params) => {
  * @param {*} params 更新文章参数
  * @returns Promise
  */
-export const articleUpdateArticleService = (params) => {
-  return request.get('/my/article/list', {
-    params
-  })
+export const articleUpdateService = (params) => {
+  return request.put('/my/article/info', params)
 }

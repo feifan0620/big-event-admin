@@ -74,6 +74,16 @@ const addArticle = () => {
 const handleEdit = (row) => {
   articleEditRef.value.open(row)
 }
+
+const onSuccess = (type) => {
+  if (type === 'add') {
+    // 如果是添加文章，则跳转渲染最后一页
+    params.value.pagenum = Math.ceil((total.value + 1) / params.value.pagesize)
+    getArticleList()
+  }
+  // 如果是编辑则直接渲染
+  getArticleList()
+}
 </script>
 <template>
   <page-container title="文章管理">
@@ -139,7 +149,7 @@ const handleEdit = (row) => {
       style="margin-top: 20px; justify-content: flex-end"
     />
     <!-- 弹出层抽屉 -->
-    <ArticleEdit ref="articleEditRef"></ArticleEdit>
+    <ArticleEdit ref="articleEditRef" @success="onSuccess"></ArticleEdit>
   </page-container>
 </template>
 <style scoped lang="scss"></style>

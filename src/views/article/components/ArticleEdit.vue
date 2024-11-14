@@ -4,6 +4,8 @@ import CateSelect from './CateSelect.vue'
 import { Plus } from '@element-plus/icons-vue'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
+import { articlePublicService } from '@/api/article'
+import { ElMessage } from 'element-plus'
 const visibleDrawer = ref(false) // 是否显示抽屉
 
 const defaultForm = {
@@ -19,16 +21,18 @@ const formModel = ref({
   ...defaultForm
 })
 
+const editorRef = ref()
+
 const open = (row) => {
   // 显示抽屉弹出层
   visibleDrawer.value = true
   if (row.id) {
     console.log('编辑回显')
-    formModel.value = { ...row }
   } else {
-    console.log('发布文章')
     // 重置表单
     formModel.value = { ...defaultForm }
+    imgUrl.value = ''
+    editorRef.value.setHTML('')
   }
 }
 
@@ -37,6 +41,26 @@ const imgUrl = ref()
 const handleImgSelect = (uploadFile) => {
   imgUrl.value = URL.createObjectURL(uploadFile.raw)
   formModel.value.cover_img = uploadFile.raw
+}
+
+const emit = defineEmits(['success'])
+const handleSubmit = async (state) => {
+  formModel.value.state = state
+  // 转换 formdata 数据
+  const artFd = new FormData()
+  for (let key in formModel.value) {
+    artFd.append(key, formModel.value[key])
+  }
+
+  if (formModel.value.id) {
+    console.log('编辑操作')
+  } else {
+    console.log(artFd)
+    await articlePublicService(artFd)
+    ElMessage.success('发布成功')
+    visibleDrawer.value = false
+    emit('success', 'add')
+  }
 }
 
 defineExpose({
@@ -56,7 +80,7 @@ defineExpose({
         <el-input v-model="formModel.title" placeholder="请输入标题"></el-input>
       </el-form-item>
       <el-form-item label="文章分类" prop="cate_id">
-        <CateSelect v-model="formModel.cate_name" width="100%"></CateSelect>
+        <CateSelect v-model="formModel.cate_id" width="100%"></CateSelect>
       </el-form-item>
       <el-form-item label="文章封面" prop="cover_img">
         <el-upload
@@ -76,12 +100,15 @@ defineExpose({
             placeholder="请输入文章内容"
             contentType="html"
             v-model:content="formModel.content"
+            ref="editorRef"
           ></QuillEditor>
         </div>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary">发布</el-button>
-        <el-button type="info">草稿</el-button>
+        <el-button type="primary" @click="handleSubmit('已发布')"
+          >发布</el-button
+        >
+        <el-button type="info" @click="handleSubmit('草稿')">草稿</el-button>
       </el-form-item>
     </el-form>
   </el-drawer>
