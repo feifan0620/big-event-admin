@@ -53,8 +53,8 @@ export const articleDelCateService = (id) => {
  * @param {*} obj 文章列表查询参数
  * @returns Promise
  */
-export const articleGetArtListService = (obj) => {
+export const articleGetArtListService = (pagenum, pagesize, obj) => {
   return request.get('/my/article/list', {
-    params: { ...obj }
+    params: { pagenum, pagesize, ...obj }
   })
 }

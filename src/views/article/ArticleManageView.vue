@@ -1,22 +1,37 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { Delete, Edit } from '@element-plus/icons-vue'
+import { articleGetCateListService } from '@/api/article'
 const articleList = ref([
   {
-    Id: 5961,
-    title: '新的文章啊',
-    pub_date: '2022-07-10 14:53:52.604',
-    state: '已发布',
-    cate_name: '体育'
-  },
-  {
-    Id: 5962,
-    title: '新的文章啊',
-    pub_date: '2022-07-10 14:54:30.904',
-    state: '草稿',
-    cate_name: '体育'
+    title: '人工智能是如何影响我们的日常生活的',
+    cate_name: '科学',
+    pub_date: new Date().toLocaleDateString(),
+    state: '已发布'
   }
 ])
+
+const cateList = ref([])
+
+onMounted(async () => {
+  const {
+    data: { data: cate }
+  } = await articleGetCateListService()
+  cateList.value = cate
+  // const {
+  //   data: { data: art }
+  // } = await articleGetArtListService(1, 10)
+  // articleList.value = art
+})
+
+const selectedCate = ref()
+
+const selectedState = ref('')
+
+const handleReset = () => {
+  selectedCate.value = ''
+  selectedState.value = ''
+}
 </script>
 <template>
   <page-container title="文章管理">
@@ -26,20 +41,24 @@ const articleList = ref([
     <!-- 搜索区域 -->
     <el-form inline>
       <el-form-item label="文章分类:">
-        <el-select style="width: 200px" placeholder="请选择">
-          <el-option value="101" label="科学"></el-option>
-          <el-option value="102" label="体育"></el-option>
+        <el-select v-model="selectedCate" style="width: 200px">
+          <el-option
+            v-for="item in cateList"
+            :key="item.id"
+            :value="item.id"
+            :label="item.cate_name"
+          ></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="发布状态:">
-        <el-select style="width: 200px" placeholder="请选择">
-          <el-option value="201" label="已发布"></el-option>
-          <el-option value="202" label="草稿"></el-option>
+        <el-select v-model="selectedState" style="width: 200px">
+          <el-option value="已发布" label="已发布"></el-option>
+          <el-option value="草稿" label="草稿"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary">搜索</el-button>
-        <el-button>重置</el-button>
+        <el-button @click="handleReset">重置</el-button>
       </el-form-item>
     </el-form>
     <!-- 表格区域 -->
@@ -66,6 +85,9 @@ const articleList = ref([
           ></el-button>
         </template>
       </el-table-column>
+      <template #empty>
+        <el-empty description="无文章数据" />
+      </template>
     </el-table>
   </page-container>
 </template>
