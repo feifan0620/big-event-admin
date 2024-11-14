@@ -53,8 +53,28 @@ export const articleDelCateService = (id) => {
  * @param {*} obj 文章列表查询参数
  * @returns Promise
  */
-export const articleGetArtListService = (obj) => {
+export const articleGetArtListService = (params) => {
   return request.get('/my/article/list', {
-    params: { ...obj }
+    params
+  })
+}
+
+/**
+ * @description 发布文章
+ * @param {*} params 添加文章参数
+ * @returns Promise
+ */
+export const articleAddArticleService = (params) => {
+  return request.post('/my/article/add', params)
+}
+
+/**
+ * @description 编辑文章
+ * @param {*} params 更新文章参数
+ * @returns Promise
+ */
+export const articleUpdateArticleService = (params) => {
+  return request.get('/my/article/list', {
+    params
   })
 }

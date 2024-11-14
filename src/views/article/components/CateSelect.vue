@@ -5,6 +5,9 @@ import { ref } from 'vue'
 defineProps({
   cateId: {
     type: [Number, String]
+  },
+  width: {
+    type: String
   }
 })
 
@@ -22,7 +25,7 @@ getCateList()
   <el-select
     :modelValue="cateId"
     @update:modelValue="emit('update:cateId', $event)"
-    style="width: 200px"
+    :style="{ width }"
   >
     <el-option
       v-for="item in cateList"

@@ -16,6 +16,7 @@ import { useRouter } from 'vue-router'
 import { ElMessageBox } from 'element-plus'
 const userStore = useUserStore()
 const router = useRouter()
+const hour = new Date().toLocaleTimeString().substring(0, 2)
 onMounted(() => {
   userStore.getUserInfo()
 })
@@ -83,9 +84,17 @@ const handleCommand = async (key) => {
             userStore.userInfo.nickname || userStore.userInfo.username
           }}</span>
           {{
-            new Date().toLocaleTimeString().substring(0, 2) < 12
-              ? '上午好！'
-              : '下午好！'
+            hour < 6
+              ? '很晚了，快休息吧！'
+              : hour <= 8
+                ? '早上好！'
+                : hour <= 11
+                  ? '上午好！'
+                  : hour <= 13
+                    ? '中午好！'
+                    : hour < 18
+                      ? '下午好！'
+                      : '晚上好！'
           }}
         </div>
         <el-dropdown placement="bottom-end" @command="handleCommand">

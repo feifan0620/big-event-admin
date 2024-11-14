@@ -4,9 +4,10 @@ import { Delete, Edit } from '@element-plus/icons-vue'
 import CateSelect from './components/CateSelect.vue'
 import { articleGetArtListService } from '@/api/article'
 import { formatTime } from '@/utils/format'
+import ArticleEdit from './components/ArticleEdit.vue'
 const loading = ref(false) // 加载状态
 
-const total = ref(0)
+const total = ref(0) // 文章总数
 
 const articleList = ref([]) // 文章列表
 
@@ -64,11 +65,20 @@ const handleReset = () => {
   params.value.state = ''
   getArticleList()
 }
+
+const articleEditRef = ref()
+const addArticle = () => {
+  articleEditRef.value.open({})
+}
+
+const handleEdit = (row) => {
+  articleEditRef.value.open(row)
+}
 </script>
 <template>
   <page-container title="文章管理">
     <template #extra>
-      <el-button type="primary">发布文章</el-button>
+      <el-button type="primary" @click="addArticle()">发布文章</el-button>
     </template>
     <!-- 搜索区域 -->
     <el-form inline>
@@ -128,6 +138,8 @@ const handleReset = () => {
       @current-change="handleCurrentChange"
       style="margin-top: 20px; justify-content: flex-end"
     />
+    <!-- 弹出层抽屉 -->
+    <ArticleEdit ref="articleEditRef"></ArticleEdit>
   </page-container>
 </template>
 <style scoped lang="scss"></style>
