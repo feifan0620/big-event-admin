@@ -2,6 +2,8 @@
 import { ref } from 'vue'
 import CateSelect from './CateSelect.vue'
 import { Plus } from '@element-plus/icons-vue'
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
 const visibleDrawer = ref(false) // 是否显示抽屉
 
 const defaultForm = {
@@ -68,7 +70,14 @@ defineExpose({
         </el-upload>
       </el-form-item>
       <el-form-item label="文章内容" prop="content">
-        <div class="editor">富文本编辑器</div>
+        <div class="editor">
+          <QuillEditor
+            theme="snow"
+            placeholder="请输入文章内容"
+            contentType="html"
+            v-model:content="formModel.content"
+          ></QuillEditor>
+        </div>
       </el-form-item>
       <el-form-item>
         <el-button type="primary">发布</el-button>
@@ -104,6 +113,12 @@ defineExpose({
       height: 178px;
       text-align: center;
     }
+  }
+}
+.editor {
+  width: 100%;
+  :deep(.ql-editor) {
+    min-height: 200px;
   }
 }
 </style>
