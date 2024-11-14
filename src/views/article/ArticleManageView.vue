@@ -83,7 +83,7 @@ const handleEdit = (row) => {
     <!-- 搜索区域 -->
     <el-form inline>
       <el-form-item label="文章分类:">
-        <CateSelect v-model:cateId="params.cate_id"></CateSelect>
+        <CateSelect width="200px" v-model:cateId="params.cate_id"></CateSelect>
       </el-form-item>
       <el-form-item label="发布状态:">
         <el-select v-model="params.state" style="width: 200px">
