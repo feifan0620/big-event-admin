@@ -6,6 +6,8 @@ import { articleGetArtListService } from '@/api/article'
 import { formatTime } from '@/utils/format'
 const loading = ref(false) // 加载状态
 
+const total = ref(0)
+
 const articleList = ref([]) // 文章列表
 
 // 文章列表请求参数
@@ -16,7 +18,6 @@ const params = ref({
   state: ''
 })
 
-
 /**
  * 获取文章列表数据
  */
@@ -24,10 +25,22 @@ const getArticleList = async () => {
   loading.value = true
   const res = await articleGetArtListService(params.value)
   articleList.value = res.data.data
+  total.value = res.data.total
   loading.value = false
 }
 
 getArticleList()
+
+const handleSizeChange = (size) => {
+  params.value.pagenum = 1
+  params.value.pagesize = size
+  getArticleList()
+}
+
+const handleCurrentChange = (page) => {
+  params.value.pagenum = page
+  getArticleList()
+}
 
 // 清空搜索条件
 const handleReset = () => {
@@ -86,6 +99,17 @@ const handleReset = () => {
         <el-empty description="无文章数据" />
       </template>
     </el-table>
+    <el-pagination
+      v-model:current-page="params.pagenum"
+      v-model:page-size="params.pagesize"
+      :page-sizes="[2, 4, 5, 10]"
+      background
+      layout="jumper,total, sizes, prev, pager, next"
+      :total="total"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      style="margin-top: 20px; justify-content: flex-end"
+    />
   </page-container>
 </template>
 <style scoped lang="scss"></style>
