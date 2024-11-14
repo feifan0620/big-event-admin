@@ -1,7 +1,7 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { Delete, Edit } from '@element-plus/icons-vue'
-import { articleGetCateListService } from '@/api/article'
+import CateSelect from './components/CateSelect.vue'
 const articleList = ref([
   {
     title: '人工智能是如何影响我们的日常生活的',
@@ -11,26 +11,16 @@ const articleList = ref([
   }
 ])
 
-const cateList = ref([])
-
-onMounted(async () => {
-  const {
-    data: { data: cate }
-  } = await articleGetCateListService()
-  cateList.value = cate
-  // const {
-  //   data: { data: art }
-  // } = await articleGetArtListService(1, 10)
-  // articleList.value = art
+const params = ref({
+  pagenum: 1,
+  pagesize: 10,
+  cate_id: '',
+  state: ''
 })
 
-const selectedCate = ref()
-
-const selectedState = ref('')
-
 const handleReset = () => {
-  selectedCate.value = ''
-  selectedState.value = ''
+  params.value.cate_id = ''
+  params.value.state = ''
 }
 </script>
 <template>
@@ -41,17 +31,10 @@ const handleReset = () => {
     <!-- 搜索区域 -->
     <el-form inline>
       <el-form-item label="文章分类:">
-        <el-select v-model="selectedCate" style="width: 200px">
-          <el-option
-            v-for="item in cateList"
-            :key="item.id"
-            :value="item.id"
-            :label="item.cate_name"
-          ></el-option>
-        </el-select>
+        <CateSelect v-model="params.cate_id"></CateSelect>
       </el-form-item>
       <el-form-item label="发布状态:">
-        <el-select v-model="selectedState" style="width: 200px">
+        <el-select v-model="params.state" style="width: 200px">
           <el-option value="已发布" label="已发布"></el-option>
           <el-option value="草稿" label="草稿"></el-option>
         </el-select>
