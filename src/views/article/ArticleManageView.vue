@@ -29,23 +29,40 @@ const getArticleList = async () => {
   loading.value = false
 }
 
+// 页面创建时加载文章列表数据
 getArticleList()
 
+/**
+ * @description 修改每页数据长度时触发
+ * @param size 每页数据长度
+ */
 const handleSizeChange = (size) => {
   params.value.pagenum = 1
   params.value.pagesize = size
   getArticleList()
 }
 
+/**
+ * @description 修改当前页码是触发
+ * @param page 当前页码
+ */
 const handleCurrentChange = (page) => {
   params.value.pagenum = page
   getArticleList()
 }
 
+// 文章搜索
+const handleSearch = () => {
+  params.value.pagenum = 1
+  getArticleList()
+}
+
 // 清空搜索条件
 const handleReset = () => {
+  params.value.pagenum = 1
   params.value.cate_id = ''
   params.value.state = ''
+  getArticleList()
 }
 </script>
 <template>
@@ -65,7 +82,7 @@ const handleReset = () => {
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary">搜索</el-button>
+        <el-button @click="handleSearch" type="primary">搜索</el-button>
         <el-button @click="handleReset">重置</el-button>
       </el-form-item>
     </el-form>
@@ -99,6 +116,7 @@ const handleReset = () => {
         <el-empty description="无文章数据" />
       </template>
     </el-table>
+    <!-- 分页导航 -->
     <el-pagination
       v-model:current-page="params.pagenum"
       v-model:page-size="params.pagesize"
