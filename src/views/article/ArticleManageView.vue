@@ -6,8 +6,9 @@ import { articleGetArtListService } from '@/api/article'
 import { formatTime } from '@/utils/format'
 const loading = ref(false) // 加载状态
 
-const articleList = ref([])
+const articleList = ref([]) // 文章列表
 
+// 文章列表请求参数
 const params = ref({
   pagenum: 1,
   pagesize: 10,
@@ -15,6 +16,10 @@ const params = ref({
   state: ''
 })
 
+
+/**
+ * 获取文章列表数据
+ */
 const getArticleList = async () => {
   loading.value = true
   const res = await articleGetArtListService(params.value)
@@ -24,6 +29,7 @@ const getArticleList = async () => {
 
 getArticleList()
 
+// 清空搜索条件
 const handleReset = () => {
   params.value.cate_id = ''
   params.value.state = ''
