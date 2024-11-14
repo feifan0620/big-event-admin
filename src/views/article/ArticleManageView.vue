@@ -2,14 +2,11 @@
 import { ref } from 'vue'
 import { Delete, Edit } from '@element-plus/icons-vue'
 import CateSelect from './components/CateSelect.vue'
-const articleList = ref([
-  {
-    title: '人工智能是如何影响我们的日常生活的',
-    cate_name: '科学',
-    pub_date: new Date().toLocaleDateString(),
-    state: '已发布'
-  }
-])
+import { articleGetArtListService } from '@/api/article'
+import { formatTime } from '@/utils/format'
+const loading = ref(false) // 加载状态
+
+const articleList = ref([])
 
 const params = ref({
   pagenum: 1,
@@ -17,6 +14,15 @@ const params = ref({
   cate_id: '',
   state: ''
 })
+
+const getArticleList = async () => {
+  loading.value = true
+  const res = await articleGetArtListService(params.value)
+  articleList.value = res.data.data
+  loading.value = false
+}
+
+getArticleList()
 
 const handleReset = () => {
   params.value.cate_id = ''
@@ -31,7 +37,7 @@ const handleReset = () => {
     <!-- 搜索区域 -->
     <el-form inline>
       <el-form-item label="文章分类:">
-        <CateSelect v-model="params.cate_id"></CateSelect>
+        <CateSelect v-model:cateId="params.cate_id"></CateSelect>
       </el-form-item>
       <el-form-item label="发布状态:">
         <el-select v-model="params.state" style="width: 200px">
@@ -45,10 +51,12 @@ const handleReset = () => {
       </el-form-item>
     </el-form>
     <!-- 表格区域 -->
-    <el-table :data="articleList" stripe>
+    <el-table :data="articleList" v-loading="loading" stripe>
       <el-table-column prop="title" label="文章标题" width="400" />
       <el-table-column prop="cate_name" label="分类" />
-      <el-table-column prop="pub_date" label="发表时间" />
+      <el-table-column prop="pub_date" label="发表时间">
+        <template #default="{ row }"> {{ formatTime(row.pub_date) }}</template>
+      </el-table-column>
       <el-table-column prop="state" label="状态" />
       <el-table-column label="操作" width="100">
         <template #default="{ row }">

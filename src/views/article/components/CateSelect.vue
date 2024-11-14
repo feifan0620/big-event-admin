@@ -3,12 +3,12 @@ import { articleGetCateListService } from '@/api/article'
 import { ref } from 'vue'
 
 defineProps({
-  modelValue: {
+  cateId: {
     type: [Number, String]
   }
 })
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:cateId'])
 
 const cateList = ref([])
 const getCateList = async () => {
@@ -20,8 +20,8 @@ getCateList()
 </script>
 <template>
   <el-select
-    :modelValue="modelValue"
-    @update:modelValue="emit('update:modelValue', $event)"
+    :modelValue="cateId"
+    @update:modelValue="emit('update:cateId', $event)"
     style="width: 200px"
   >
     <el-option
