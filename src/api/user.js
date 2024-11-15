@@ -25,3 +25,12 @@ export const userLoginService = ({ username, password }) => {
 export const userGetInfoService = () => {
   return request.get('/my/userinfo')
 }
+
+/**
+ * @description 更新用户信息
+ * @param {*} params
+ * @returns Promise
+ */
+export const userUpdateInfoService = (params) => {
+  return request.put('/my/userinfo', params)
+}
