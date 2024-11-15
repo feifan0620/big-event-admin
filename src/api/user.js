@@ -34,3 +34,12 @@ export const userGetInfoService = () => {
 export const userUpdateInfoService = (params) => {
   return request.put('/my/userinfo', params)
 }
+
+/**
+ * @description 更新用户头像
+ * @param {*} avatar
+ * @returns Promise
+ */
+export const userUpdateAvatarService = (avatar) => {
+  return request.patch('/my/update/avatar', { avatar })
+}
